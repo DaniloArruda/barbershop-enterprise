@@ -1,11 +1,13 @@
 package usecase.appointment_solicited
 
+import com.danilo.barbershop.enterprise.application.usecase.appointment_solicited.AppointmentSolicitedRequest
+import com.danilo.barbershop.enterprise.application.usecase.appointment_solicited.AppointmentSolicitedUseCase
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import producer.AppointmentProducer
-import repository.AppointmentRepository
+import com.danilo.barbershop.enterprise.application.producer.AppointmentProducer
+import com.danilo.barbershop.enterprise.application.repository.AppointmentRepository
 
 
 class AppointmentSolicitedUseCaseTest {

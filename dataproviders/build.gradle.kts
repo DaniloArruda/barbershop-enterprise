@@ -25,6 +25,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation(project(":domain"))
+    implementation(project(":application"))
 }
 
 tasks.test {

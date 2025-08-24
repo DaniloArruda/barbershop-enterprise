@@ -1,6 +1,6 @@
 package com.danilo.barbershop.enterprise.application.producer
 
-import com.danilo.barbershop.enterprise.domain.Appointment
+import com.danilo.Appointment
 
 interface AppointmentProducer {
     fun publishAppointmentCreated(appointment: Appointment)

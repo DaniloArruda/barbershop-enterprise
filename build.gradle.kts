@@ -35,6 +35,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.kafka:spring-kafka")
 
+    implementation(project(":domain"))
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	runtimeOnly("io.micrometer:micrometer-registry-prometheus")

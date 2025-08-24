@@ -1,4 +1,4 @@
-package com.danilo.barbershop.enterprise.domain
+package com.danilo
 
 import java.util.UUID
 

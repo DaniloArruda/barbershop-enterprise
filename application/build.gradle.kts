@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+    implementation(project(":domain"))
 }
 
 tasks.test {

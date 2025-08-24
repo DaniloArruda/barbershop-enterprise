@@ -1,4 +1,4 @@
-package com.danilo.barbershop.enterprise.application.repository
+package repository
 
 import com.danilo.Appointment
 

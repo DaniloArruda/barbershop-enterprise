@@ -1,4 +1,4 @@
-package com.danilo.barbershop.enterprise.application.producer
+package producer
 
 import com.danilo.Appointment
 

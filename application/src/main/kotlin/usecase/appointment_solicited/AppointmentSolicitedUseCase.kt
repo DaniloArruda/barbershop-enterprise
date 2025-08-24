@@ -1,8 +1,8 @@
-package com.danilo.barbershop.enterprise.application.usecases.appointment_solicited
+package usecase.appointment_solicited
 
 import com.danilo.Appointment
-import com.danilo.barbershop.enterprise.application.producer.AppointmentProducer
-import com.danilo.barbershop.enterprise.application.repository.AppointmentRepository
+import producer.AppointmentProducer
+import repository.AppointmentRepository
 
 class AppointmentSolicitedUseCase(
     private val appointmentRepository: AppointmentRepository,

@@ -1,11 +1,12 @@
-package com.danilo.barbershop.enterprise.application.usecases.appointment_solicited
+package usecase.appointment_solicited
 
-import com.danilo.barbershop.enterprise.application.producer.AppointmentProducer
-import com.danilo.barbershop.enterprise.application.repository.AppointmentRepository
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
+import producer.AppointmentProducer
+import repository.AppointmentRepository
+
 
 class AppointmentSolicitedUseCaseTest {
 
@@ -27,4 +28,5 @@ class AppointmentSolicitedUseCaseTest {
         verify(appointmentRepository).save(any())
         verify(appointmentProducer).publishAppointmentCreated(any())
     }
+
 }

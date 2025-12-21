@@ -14,7 +14,7 @@ class AppointmentSolicitedListener(
 
     @PostMapping("/solicit")
     fun process(@RequestBody event: AppointmentSolicitedEvent) {
-        println("Processing appointment for customer ${event.customerId} with barber ${event.barberId} at ${event.dateTime}")
+        println("Processing appointment for customer ${event.customerId} with barber ${event.barberId} at ${event.startAt}")
         val appointmentSolicitedRequest = event.toRequest()
 
         useCase.execute(appointmentSolicitedRequest)

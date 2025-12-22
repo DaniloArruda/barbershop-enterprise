@@ -9,25 +9,42 @@ The worker module now uses Kafka for consuming appointment events instead of RES
 
 ## Starting Kafka Locally
 
-### 1. Start Kafka and Zookeeper
+### Quick Start (Recommended)
+Initialize the complete local environment with a single command:
+```bash
+make init-local
+```
+
+This will:
+1. Start **Zookeeper** on port `2181`
+2. Start **Kafka** on port `9092`
+3. Start **Kafka UI** on port `9090` (Web interface: http://localhost:9090)
+4. Create the `appointment.solicited` topic with 3 partitions
+
+### Manual Setup (Alternative)
+
+If you prefer to run steps manually:
+
+**1. Start Kafka and Zookeeper**
 ```bash
 docker-compose up -d
 ```
 
-This will start:
-- **Zookeeper** on port `2181`
-- **Kafka** on port `9092`
-- **Kafka UI** on port `8080` (Web interface: http://localhost:8080)
+**2. Create Kafka Topics**
+```bash
+chmod +x local/create_kafka_topics.sh
+./local/create_kafka_topics.sh
+```
 
-### 2. Verify Kafka is Running
+**3. Verify Kafka is Running**
 ```bash
 docker ps
 ```
 
 You should see three containers: `zookeeper`, `kafka`, and `kafka-ui`
 
-### 3. View Kafka UI
-Open your browser and navigate to: http://localhost:8080
+**4. View Kafka UI**
+Open your browser and navigate to: http://localhost:9090
 
 ## Running the Worker Application
 
@@ -43,8 +60,34 @@ The worker will:
 
 ## Testing the Kafka Consumer
 
-### Option 1: Using Kafka UI (Easiest)
-1. Go to http://localhost:8080
+### Option 1: Using Make Command (Recommended)
+Send a test event with a single command:
+```bash
+make produce-appointment-solicited-event
+```
+
+This will load the event payload from `local/appointment_solicited_event.json` and produce it to the `appointment.solicited` topic.
+
+**Customizing the Event:**
+Edit `local/appointment_solicited_event.json` to change the event data:
+```bash
+# Edit the JSON file with your preferred editor
+vim local/appointment_solicited_event.json
+```
+
+The default event structure:
+```json
+{
+  "customerId": "123e4567-e89b-12d3-a456-426614174000",
+  "barberId": "223e4567-e89b-12d3-a456-426614174000",
+  "taskId": "323e4567-e89b-12d3-a456-426614174000",
+  "startAt": "2024-12-22T14:00:00-03:00",
+  "endAt": "2024-12-22T15:00:00-03:00"
+}
+```
+
+### Option 2: Using Kafka UI
+1. Go to http://localhost:9090
 2. Navigate to "Topics"
 3. Create topic `appointment.solicited` (if not auto-created)
 4. Click "Produce Message"
@@ -55,12 +98,12 @@ The worker will:
   "customerId": "123e4567-e89b-12d3-a456-426614174000",
   "barberId": "223e4567-e89b-12d3-a456-426614174000",
   "taskId": "323e4567-e89b-12d3-a456-426614174000",
-  "startAt": "2024-12-21T14:00:00-03:00",
-  "endAt": "2024-12-21T15:00:00-03:00"
+  "startAt": "2024-12-22T14:00:00-03:00",
+  "endAt": "2024-12-22T15:00:00-03:00"
 }
 ```
 
-### Option 2: Using Kafka Console Producer
+### Option 3: Using Kafka Console Producer
 ```bash
 docker exec -it kafka kafka-console-producer \
   --topic appointment.solicited \
@@ -69,18 +112,48 @@ docker exec -it kafka kafka-console-producer \
 
 Then paste the JSON message above and press Enter.
 
-### Option 3: Using kafka-console-producer with value
+### Option 4: Using kafka-console-producer with value
 ```bash
 docker exec -it kafka bash -c "echo '{\"customerId\":\"123e4567-e89b-12d3-a456-426614174000\",\"barberId\":\"223e4567-e89b-12d3-a456-426614174000\",\"taskId\":\"323e4567-e89b-12d3-a456-426614174000\",\"startAt\":\"2024-12-21T14:00:00-03:00\",\"endAt\":\"2024-12-21T15:00:00-03:00\"}' | kafka-console-producer --topic appointment.solicited --bootstrap-server localhost:9092"
 ```
 
-## Stopping Kafka
+## Managing Local Environment
 
+### Available Makefile Commands
+
+**Initialize local environment** (starts everything + creates topics):
+```bash
+make init-local
+```
+
+**Start worker application**:
+```bash
+make start-worker
+```
+
+**Produce test event** (sends sample appointment event):
+```bash
+make produce-appointment-solicited-event
+```
+
+**Stop local environment**:
+```bash
+make stop-local
+```
+
+**Clean local environment** (removes volumes):
+```bash
+make clean-local
+```
+
+### Manual Docker Commands
+
+**Stop containers**:
 ```bash
 docker-compose down
 ```
 
-To remove volumes as well:
+**Stop and remove volumes**:
 ```bash
 docker-compose down -v
 ```
@@ -110,7 +183,7 @@ Edit `application.yml` to change:
 - Check logs: `docker logs kafka`
 
 ### Messages Not Being Consumed
-- Verify topic exists: http://localhost:8080
+- Verify topic exists: http://localhost:9090
 - Check worker logs for errors
 - Ensure consumer group is properly configured
 

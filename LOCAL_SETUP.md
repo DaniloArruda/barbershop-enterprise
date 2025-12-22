@@ -1,13 +1,15 @@
-# Kafka Local Setup Guide
+# Local Environment Setup Guide (Kafka + DynamoDB)
 
 ## Overview
-The worker module now uses Kafka for consuming appointment events instead of REST endpoints.
+The local environment provides:
+- **Kafka** for consuming appointment events instead of REST endpoints.
+- **DynamoDB Local** for persisting appointments using the `barbershop-enterprise` table.
 
 ## Prerequisites
 - Docker and Docker Compose installed
 - Java 21 (already configured in project)
 
-## Starting Kafka Locally
+## Starting Local Infrastructure
 
 ### Quick Start (Recommended)
 Initialize the complete local environment with a single command:
@@ -19,9 +21,11 @@ This will:
 1. Start **Zookeeper** on port `2181`
 2. Start **Kafka** on port `9092`
 3. Start **Kafka UI** on port `9090` (Web interface: http://localhost:9090)
-4. Create the `appointment.solicited` topic with 3 partitions
+4. Start **DynamoDB Local** on port `8000`
+5. Create the `appointment.solicited` topic with 3 partitions
+6. Create the **`barbershop-enterprise`** DynamoDB table with the expected indexes
 
-### Manual Setup (Alternative)
+### Manual Kafka Setup (Alternative)
 
 If you prefer to run steps manually:
 
@@ -41,7 +45,57 @@ chmod +x local/create_kafka_topics.sh
 docker ps
 ```
 
-You should see three containers: `zookeeper`, `kafka`, and `kafka-ui`
+You should see the containers: `zookeeper`, `kafka`, `kafka-ui`, and `dynamodb-local`.
+
+---
+
+## DynamoDB Local
+
+### Service
+
+- Defined in `docker-compose.yml` as the `dynamodb-local` service.
+- Exposed on `http://localhost:8000`.
+- Uses in-memory storage for fast local development.
+
+When you run:
+
+```bash
+make init-local
+```
+
+the following happens for DynamoDB:
+
+1. The `dynamodb-local` container is started.
+2. The script `local/create_dynamodb_table.sh` is executed to (idempotently) create the table:
+   - Table name: `barbershop-enterprise`
+   - Primary key: `pk` (partition key), `sk` (sort key)
+   - Global Secondary Indexes:
+     - `barber-appointments` (partition key: `barberId`)
+     - `customer-appointments` (partition key: `customerId`)
+
+### Verifying the Table
+
+You can verify that the table was created using the AWS CLI:
+
+```bash
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+aws dynamodb describe-table \
+  --table-name barbershop-enterprise \
+  --endpoint-url http://localhost:8000
+```
+
+### Inspecting Data
+
+After running the worker and producing events, you can inspect stored appointments with:
+
+```bash
+aws dynamodb scan \
+  --table-name barbershop-enterprise \
+  --endpoint-url http://localhost:8000
+```
+
+> Note: You need the AWS CLI installed locally for these commands.
 
 **4. View Kafka UI**
 Open your browser and navigate to: http://localhost:9090

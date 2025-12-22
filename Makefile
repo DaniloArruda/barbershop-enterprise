@@ -6,6 +6,9 @@ init-local:
 	@echo "Creating Kafka topics..."
 	chmod +x local/create_kafka_topics.sh
 	./local/create_kafka_topics.sh
+	@echo "Creating DynamoDB tables..."
+	chmod +x local/create_dynamodb_table.sh
+	./local/create_dynamodb_table.sh
 	@echo "Local environment is ready!"
 
 stop-local:

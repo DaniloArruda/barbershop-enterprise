@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.spring") version "1.9.25"
 
     id("org.springframework.boot") version "3.5.5" apply false
     id("io.spring.dependency-management") version "1.1.7"
@@ -26,6 +27,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation(project(":domain"))
     implementation(project(":application"))
+
+    implementation("software.amazon.awssdk:dynamodb:2.25.64")
+    implementation("software.amazon.awssdk:dynamodb-enhanced:2.25.64")
 }
 
 tasks.test {

@@ -2,6 +2,7 @@ package com.danilo.barbershop.enterprise.dataproviders.dynamo
 
 import com.danilo.com.danilo.barbershop.enterprise.domain.Appointment
 import com.danilo.barbershop.enterprise.application.repository.AppointmentRepository
+import com.danilo.barbershop.enterprise.dataproviders.dynamo.model.AppointmentItem
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema

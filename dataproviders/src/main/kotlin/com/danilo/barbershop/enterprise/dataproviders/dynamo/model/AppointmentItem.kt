@@ -1,4 +1,4 @@
-package com.danilo.barbershop.enterprise.dataproviders.dynamo
+package com.danilo.barbershop.enterprise.dataproviders.dynamo.model
 
 import com.danilo.com.danilo.barbershop.enterprise.domain.Appointment
 import com.danilo.com.danilo.barbershop.enterprise.domain.AppointmentStatus

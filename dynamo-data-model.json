@@ -1,0 +1,92 @@
+{
+  "ModelName": "barbershop-enterprise",
+  "ModelMetadata": {
+    "Author": "Danilo Arruda",
+    "DateCreated": "Dec 22, 2025, 04:30 PM",
+    "DateLastModified": "Dec 22, 2025, 04:40 PM",
+    "Description": "Data model from the barbershop-enterprise application",
+    "AWSService": "Amazon DynamoDB",
+    "Version": "3.0"
+  },
+  "DataModel": [
+    {
+      "TableName": "barbershop-enterprise",
+      "KeyAttributes": {
+        "PartitionKey": {
+          "AttributeName": "pk",
+          "AttributeType": "S"
+        },
+        "SortKey": {
+          "AttributeName": "sk",
+          "AttributeType": "S"
+        }
+      },
+      "NonKeyAttributes": [
+        {
+          "AttributeName": "barberId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "customerId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "taskId",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "startAt",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "endAt",
+          "AttributeType": "S"
+        },
+        {
+          "AttributeName": "status",
+          "AttributeType": "S"
+        }
+      ],
+      "TableFacets": [],
+      "GlobalSecondaryIndexes": [
+        {
+          "IndexName": "barber-appointments",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "barberId",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "INCLUDE",
+            "NonKeyAttributes": [
+              "customerId",
+              "taskId",
+              "startAt",
+              "endAt",
+              "status"
+            ]
+          }
+        },
+        {
+          "IndexName": "customer-appointments",
+          "KeyAttributes": {
+            "PartitionKey": {
+              "AttributeName": "customerId",
+              "AttributeType": "S"
+            }
+          },
+          "Projection": {
+            "ProjectionType": "ALL"
+          }
+        }
+      ],
+      "TableData": [],
+      "DataAccess": {
+        "MySql": {}
+      },
+      "SampleDataFormats": {},
+      "BillingMode": "PAY_PER_REQUEST"
+    }
+  ]
+}

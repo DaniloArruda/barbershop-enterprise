@@ -4,6 +4,7 @@ import com.danilo.com.danilo.barbershop.enterprise.domain.Appointment
 import com.danilo.com.danilo.barbershop.enterprise.domain.AppointmentStatus
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -40,11 +41,13 @@ class AppointmentItem() {
         sk = value
     }
 
+    @DynamoDbSecondaryPartitionKey(indexNames = ["barber-appointments"])
     fun getBarberId(): String = barberId
     fun setBarberId(value: String) {
         barberId = value
     }
 
+    @DynamoDbSecondaryPartitionKey(indexNames = ["customer-appointments"])
     fun getCustomerId(): String = customerId
     fun setCustomerId(value: String) {
         customerId = value

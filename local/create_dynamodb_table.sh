@@ -29,7 +29,7 @@ aws dynamodb create-table \
       ],
       "Projection": {
         "ProjectionType": "INCLUDE",
-        "NonKeyAttributes": ["customerId", "taskId", "startAt", "endAt"]
+        "NonKeyAttributes": ["customerId", "taskId", "startAt", "endAt", "status"]
       }
     },
     {
